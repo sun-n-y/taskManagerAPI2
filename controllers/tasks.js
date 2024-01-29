@@ -1,9 +1,23 @@
+const Task = require('../models/Task');
+
 const getAllTasks = async (req, res) => {
-  res.json({ msg: 'success', data: 'all tasks' });
+  try {
+    const allTasks = await Task.find({});
+    res
+      .status(200)
+      .json({ msg: 'success, fetched all documents from mongodb', allTasks });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
 };
 
 const createTask = async (req, res) => {
-  res.json({ msg: 'success', data: req.body });
+  try {
+    const task = await Task.create(req.body);
+    res.status(201).json({ msg: 'success, document created in mongodb', task });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
 };
 
 const getSingleTask = async (req, res) => {
