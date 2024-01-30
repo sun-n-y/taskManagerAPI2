@@ -2,10 +2,10 @@ const Task = require('../models/Task');
 
 const getAllTasks = async (req, res) => {
   try {
-    const allTasks = await Task.find({});
+    const tasks = await Task.find({});
     res
       .status(200)
-      .json({ msg: 'success, fetched all documents from mongodb', allTasks });
+      .json({ msg: 'success, fetched all documents from mongodb', tasks });
   } catch (error) {
     res.status(500).json({ msg: error });
   }
@@ -47,7 +47,7 @@ const updateTask = async (req, res) => {
         .status(404)
         .json({ msg: `no task with id: ${taskID}, exists` });
     }
-    res.status(200).json({ id: taskID, data: task });
+    res.status(200).json({ id: taskID, task });
   } catch (error) {
     res.status(500).json({ msg: error });
   }
