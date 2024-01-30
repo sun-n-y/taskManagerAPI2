@@ -12,7 +12,7 @@ const router = express.Router();
 router.get('/', getAllTasks);
 router.post('/', createTask);
 router.get('/:id', getSingleTask);
-router.post('/:id', updateTask);
+router.patch('/:id', updateTask);
 router.delete('/:id', deleteTask);
 
 module.exports = router;

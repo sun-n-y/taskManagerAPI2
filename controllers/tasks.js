@@ -21,15 +21,51 @@ const createTask = async (req, res) => {
 };
 
 const getSingleTask = async (req, res) => {
-  res.json({ msg: 'success', data: `single task id:${req.params.id}` });
+  try {
+    const { id: taskID } = req.params;
+    const task = await Task.findOne({ _id: taskID });
+    if (!task) {
+      return res
+        .status(404)
+        .json({ msg: `no task with id: ${taskID}, exists` });
+    }
+    res.status(200).json({ msg: 'success, document retrieved', task });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
 };
 
 const updateTask = async (req, res) => {
-  res.json({ msg: 'success', data: 'update task' });
+  try {
+    const { id: taskID } = req.params;
+    const task = await Task.findOneAndUpdate({ _id: taskID }, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!task) {
+      return res
+        .status(404)
+        .json({ msg: `no task with id: ${taskID}, exists` });
+    }
+    res.status(200).json({ id: taskID, data: task });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
 };
 
 const deleteTask = async (req, res) => {
-  res.json({ msg: 'success', data: 'delete task' });
+  try {
+    const { id: taskID } = req.params;
+    const task = await Task.findOneAndDelete({ _id: taskID });
+    if (!task) {
+      return res
+        .status(404)
+        .json({ msg: `no task with id: ${taskID}, exists` });
+    }
+    res.status(200).json({ msg: 'success, task deleted', task });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
 };
 
 module.exports = {
